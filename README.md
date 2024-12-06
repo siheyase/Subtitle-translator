@@ -17,15 +17,16 @@
 ```
 
 #### 项目构建
+虚拟机分配磁盘建议50G，内存目前我的设定是13.3G
 **1. Apache Spark**  
 
 **2. python依赖**  
+python基于paddleocr要求限制版本为3.7-3.9
 requirement.txt # 待构建
 ```
-easyocr
-opencv
-pillow
-transformers
+opencv-python
+ollama
+httpx[socks]
 ```
 
 **2. 中文字体**
@@ -34,6 +35,31 @@ https://github.com/adobe-fonts/source-han-serif/raw/release/Variable/TTF/SourceH
 在`combine_video.py`文件line 14行处进行替换
 ```
 font = ImageFont.truetype("/usr/share/fonts/truetype/SourceHanSerifSC-VF.ttf", 20)
+```
+
+**3.PaddleOCR文本检测**
+安装源选择清华，CPU版PaddlePaddle：
+```
+python -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+**4.Ollama安装和模型下载**
+在linux系统安装ollama
+```
+curl -fsSL https://ollama.com/install.sh | sh
+```
+ollama服务启动
+```
+ollama serve
+```
+选择qwen2.5:1.5b-instruct-q8_0模型作为翻译模型（约1.6G）
+```
+ollama run qwen2.5:1.5b-instruct-q8_0
+```
+第一次下载完成后会直接进入模型的命令行交互界面，可输入/bye退出
+后续通过仍通过该命令启动模型
+```
+ollama run <model_name>
 ```
 
 #### 运行命令
@@ -52,6 +78,10 @@ translated_rdd.saveAsTextFile("file:///home/xuqi/video_subtitle_translation/tran
 运行后各个子目录都会自动生成
 ```
 spark-submit --master local[4] spark_job.py
+```
+ps：cqw的输入命令是这个，可以尝试换不同的并行数和分区看看运行效率。
+```
+spark-submit --master local[2] --conf spark.default.parallelism=4 --conf spark.sql.shuffle.partitions=4 spark_job.py
 ```
 
 
