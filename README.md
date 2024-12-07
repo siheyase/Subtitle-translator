@@ -79,9 +79,9 @@ translated_rdd.saveAsTextFile("file:///home/xuqi/video_subtitle_translation/tran
 ```
 spark-submit --master local[4] spark_job.py
 ```
-ps：cqw的输入命令是这个，可以尝试换不同的并行数和分区看看运行效率。
+ps：cqw的输入命令是这个，可以尝试换不同的并行数和分区看看运行效率。（目前对于12秒的video-all.mp4，单机可以在3min内运行完）
 ```
-spark-submit --master local[2] --conf spark.default.parallelism=4 --conf spark.sql.shuffle.partitions=4 spark_job.py
+spark-submit --master local[4] --conf spark.default.parallelism=8 --conf spark.sql.shuffle.partitions=8 spark_job.py
 ```
 
 
