@@ -7,11 +7,11 @@
 ├── translated_subtitles/             # 字幕翻译任务分区输出结果
 ├── frames_with_subtitles/            # 翻译后的字幕合并视频帧
 ├── input_video # 要处理的视频放在这里
-│   ├── video-all.mp4
-│   └── video.mp4 # 命名为video.mp4 是待处理的视频
+│   └── video-all.mp4 # 待处理的视频
 ├── combine_video.py # 合并翻译后的字幕和视频帧
 ├── extract_frames.py # 帧提取
-├── ocr_and_translate.py # # 字幕识别和翻译
+├── ocr.py # 字幕识别
+├── translate.py # 字幕翻译
 ├── preprocess_frames.py # 帧预处理
 └── spark_job.py # Spark 提交作业主程序
 ```
