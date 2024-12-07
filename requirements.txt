@@ -1,4 +1,2 @@
-easyocr
-opencv
-pillow
-transformers
+opencv-python
+httpx[socks]
