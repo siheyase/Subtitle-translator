@@ -18,9 +18,12 @@
 
 #### 项目构建
 虚拟机分配磁盘建议50G，内存目前我的设定是13.3G
+
 **1. Apache Spark**  
 
-**2. python依赖**  
+**2. Hadoop**  
+
+**3. python依赖**  
 python基于paddleocr要求限制版本为3.7-3.9
 requirement.txt # 待构建
 ```
@@ -29,7 +32,7 @@ ollama
 httpx[socks]
 ```
 
-**2. 中文字体**
+**4. 中文字体**
 可以替换为系统中已有的中文字体，我没有所以自己另外下了一个。
 https://github.com/adobe-fonts/source-han-serif/raw/release/Variable/TTF/SourceHanSerifSC-VF.ttf
 在`combine_video.py`文件line 14行处进行替换
@@ -37,13 +40,13 @@ https://github.com/adobe-fonts/source-han-serif/raw/release/Variable/TTF/SourceH
 font = ImageFont.truetype("/usr/share/fonts/truetype/SourceHanSerifSC-VF.ttf", 20)
 ```
 
-**3.PaddleOCR文本检测**
+**5.PaddleOCR文本检测**
 安装源选择清华，CPU版PaddlePaddle：
 ```
 python -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-**4.Ollama安装和模型下载**
+**6.Ollama安装和模型下载**
 在linux系统安装ollama
 ```
 curl -fsSL https://ollama.com/install.sh | sh
@@ -67,6 +70,12 @@ ollama run <model_name>
 ```
 start-master.sh
 start-worker.sh spark://<master-ip>:7077 # master-ip我这里单机部署就是localhost
+```
+如果进行单机多节点集群部署，启动worker节点时需指定不同端口
+```
+start-worker.sh --port 7078 spark://localhost:7077
+start-worker.sh --port 7079 spark://localhost:7077
+start-worker.sh --port 7080 spark://localhost:7077
 ```
 2. 一些路径修改
 `spark_job.py` line 40 这里翻译后的结果要存储在本地，因为我没用hadoop，改成项目绝对路径不容易报错
